@@ -6,19 +6,17 @@
 # https://github.com/hazbo/the-super-tiny-compiler (Go)
 
 
-=begin
----------------------------------------------------------------------
-"(add 2 (subtract 4 2))"  |  [{:type=>"paren", :value=>"("},
-                          |   {:type=>"name", :value=>"add"},
-                          |   {:type=>"number", :value=>"2"},
-                          |   {:type=>"paren", :value=>"("},
-                          |   {:type=>"name", :value=>"subtract"},
-                          |   {:type=>"number", :value=>"4"},
-                          |   {:type=>"number", :value=>"2"},
-                          |   {:type=>"paren", :value=>")"},
-                          |   {:type=>"paren", :value=>")"}]
----------------------------------------------------------------------
-=end
+# ---------------------------------------------------------------------
+# "(add 2 (subtract 4 2))"  |  [{:type=>"paren", :value=>"("},
+#                           |   {:type=>"name", :value=>"add"},
+#                           |   {:type=>"number", :value=>"2"},
+#                           |   {:type=>"paren", :value=>"("},
+#                           |   {:type=>"name", :value=>"subtract"},
+#                           |   {:type=>"number", :value=>"4"},
+#                           |   {:type=>"number", :value=>"2"},
+#                           |   {:type=>"paren", :value=>")"},
+#                           |   {:type=>"paren", :value=>")"}]
+# ---------------------------------------------------------------------
 def tokenize(input)
   current = 0 
   tokens = []
@@ -91,21 +89,19 @@ def tokenize(input)
   tokens
 end
 
-=begin
--------------------------------------------------------------------------------------------------
-[{:type=>"paren", :value=>"("},       | {:type=>"Program",
- {:type=>"name", :value=>"add"},      |  :body=>
- {:type=>"number", :value=>"2"},      |   [{:type=>"CallExpression",
- {:type=>"paren", :value=>"("},       |     :name=>"add",
- {:type=>"name", :value=>"subtract"}, |     :params=>
- {:type=>"number", :value=>"4"},      |      [{:type=>"NumberLiteral", :value=>"2"},
- {:type=>"number", :value=>"2"},      |       {:type=>"CallExpression",
- {:type=>"paren", :value=>")"},       |        :name=>"subtract",
- {:type=>"paren", :value=>")"}]       |        :params=>
-                                      |         [{:type=>"NumberLiteral", :value=>"4"},
-                                      |          {:type=>"NumberLiteral", :value=>"2"}]}]}]}
--------------------------------------------------------------------------------------------------
-=end
+# -------------------------------------------------------------------------------------------------
+# [{:type=>"paren", :value=>"("},       | {:type=>"Program",
+#  {:type=>"name", :value=>"add"},      |  :body=>
+#  {:type=>"number", :value=>"2"},      |   [{:type=>"CallExpression",
+#  {:type=>"paren", :value=>"("},       |     :name=>"add",
+#  {:type=>"name", :value=>"subtract"}, |     :params=>
+#  {:type=>"number", :value=>"4"},      |      [{:type=>"NumberLiteral", :value=>"2"},
+#  {:type=>"number", :value=>"2"},      |       {:type=>"CallExpression",
+#  {:type=>"paren", :value=>")"},       |        :name=>"subtract",
+#  {:type=>"paren", :value=>")"}]       |        :params=>
+#                                       |         [{:type=>"NumberLiteral", :value=>"4"},
+#                                       |          {:type=>"NumberLiteral", :value=>"2"}]}]}]}
+# -------------------------------------------------------------------------------------------------
 def parse(tokens)
   current = 0
 
@@ -176,23 +172,21 @@ def traverse(ast, visitor)
   traverse_node.call(ast, nil)
 end
 
-=begin
----------------------------------------------------------------------------------------------------------------------
-{:type=>"Program",                                    | {:type=>"Program",
- :body=>                                              |  :body=>
-  [{:type=>"CallExpression",                          |   [{:type=>"ExpressionStatement",
-    :name=>"add",                                     |     :expression=>
-    :params=>                                         |      {:type=>"CallExpression",
-     [{:type=>"NumberLiteral", :value=>"2"},          |       :callee=>{:type=>"Identifier", :name=>"add"},
-      {:type=>"CallExpression",                       |       :arguments=>
-       :name=>"subtract",                             |        [{:type=>"NumberLiteral", :value=>"2"},
-       :params=>                                      |         {:type=>"CallExpression",
-        [{:type=>"NumberLiteral", :value=>"4"},       |          :callee=>{:type=>"Identifier", :name=>"subtract"},
-         {:type=>"NumberLiteral", :value=>"2"}]}]}]}  |          :arguments=>
-                                                      |           [{:type=>"NumberLiteral", :value=>"4"},
-                                                      |            {:type=>"NumberLiteral", :value=>"2"}]}]}}]}
----------------------------------------------------------------------------------------------------------------------
-=end
+# ---------------------------------------------------------------------------------------------------------------------
+# {:type=>"Program",                                    | {:type=>"Program",
+#  :body=>                                              |  :body=>
+#   [{:type=>"CallExpression",                          |   [{:type=>"ExpressionStatement",
+#     :name=>"add",                                     |     :expression=>
+#     :params=>                                         |      {:type=>"CallExpression",
+#      [{:type=>"NumberLiteral", :value=>"2"},          |       :callee=>{:type=>"Identifier", :name=>"add"},
+#       {:type=>"CallExpression",                       |       :arguments=>
+#        :name=>"subtract",                             |        [{:type=>"NumberLiteral", :value=>"2"},
+#        :params=>                                      |         {:type=>"CallExpression",
+#         [{:type=>"NumberLiteral", :value=>"4"},       |          :callee=>{:type=>"Identifier", :name=>"subtract"},
+#          {:type=>"NumberLiteral", :value=>"2"}]}]}]}  |          :arguments=>
+#                                                       |           [{:type=>"NumberLiteral", :value=>"4"},
+#                                                       |            {:type=>"NumberLiteral", :value=>"2"}]}]}}]}
+# ---------------------------------------------------------------------------------------------------------------------
 def transform(ast)
   visitor = {
     "NumberLiteral" => ->(node, parent) {

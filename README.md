@@ -1,5 +1,5 @@
 # strcompiler
-Supre Tiny Ruby Compiler, modelled after [The Super Tiny Compiler][1]
+(s)uper (t)iny (r)uby compiler, modelled after the [super-tiny-compiler][1]
 
 Input: `(add 2 (subtract 10 5))`
 
