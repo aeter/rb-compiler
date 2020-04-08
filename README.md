@@ -1,4 +1,4 @@
-# rb-compiler
+# strcompiler
 tiny compiler
 
 Input: `(add 2 (subtract 10 5))`
