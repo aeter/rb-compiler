@@ -152,10 +152,8 @@ end
 
 def traverse(ast, visitor)
   traverse_node = ->(node, parent) do
-    method = visitor[node[:type]]
-    if method
-      method.call(node, parent)
-    end
+    fn = visitor[node[:type]]
+    fn.call(node, parent) if fn
 
     case node[:type]
     when 'Program'
@@ -188,22 +186,21 @@ end
 #                                                       |            {:type=>"NumberLiteral", :value=>"2"}]}]}}]}
 # ---------------------------------------------------------------------------------------------------------------------
 def transform(ast)
-  visitor = {
-    "NumberLiteral" => ->(node, parent) {
-      parent[:_context] << { type: 'NumberLiteral', value: node[:value] }
-    },
-    "StringLiteral" => ->(node, parent) {
-      parent[:_context] << { type: 'StringLiteral', value: node[:value] }
-    },
-    "CallExpression" => ->(node, parent) {
-      expression = { type: 'CallExpression', callee: { type: 'Identifier', name: node[:name] }, arguments: [] }
-      node[:_context] = expression[:arguments]
-      if parent[:type] != 'CallExpression'
-        expression = { type: 'ExpressionStatement', expression: expression }
-      end
-      parent[:_context] << expression
-    },
-  }
+  visitor = {}
+  visitor["NumberLiteral"] = ->(node, parent) do
+    parent[:_context] << { type: 'NumberLiteral', value: node[:value] }
+  end
+  visitor["StringLiteral"] = ->(node, parent) do
+    parent[:_context] << { type: 'StringLiteral', value: node[:value] }
+  end
+  visitor["CallExpression"] = ->(node, parent) do
+    expression = { type: 'CallExpression', callee: { type: 'Identifier', name: node[:name] }, arguments: [] }
+    node[:_context] = expression[:arguments]
+    if parent[:type] != 'CallExpression'
+      expression = { type: 'ExpressionStatement', expression: expression }
+    end
+    parent[:_context] << expression
+  end
 
   ast[:_context] = []
   traverse(ast, visitor)
