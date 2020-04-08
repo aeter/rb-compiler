@@ -1,9 +1,9 @@
 #!/usr/bin/env ruby
 
 # A super tiny compiler, modelled after
-# https://github.com/jamiebuilds/the-super-tiny-compiler
+# https://github.com/jamiebuilds/the-super-tiny-compiler (JS)
 # and
-# https://github.com/hazbo/the-super-tiny-compiler
+# https://github.com/hazbo/the-super-tiny-compiler (Go)
 
 
 =begin
