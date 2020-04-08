@@ -193,7 +193,8 @@ end
 
 def main
   input = "(add 2 (subtract 4 2))"
-  puts "Input: #{input}"
+  puts "Compiling..."
+  puts "Input:  #{input}"
 
   tokenized = tokenize(input)
   parsed = parse(tokenized)
