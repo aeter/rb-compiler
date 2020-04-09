@@ -130,11 +130,8 @@ def parse(tokens)
       end
       # skip closing paren
       current += 1
-
       return node
     end
-
-    # on unrecognized token type, raise error
     raise StandardError.new("I don't know what token this is: #{token}")
   end
 
@@ -204,7 +201,6 @@ def transform(ast)
 
   ast[:_context] = []
   traverse(ast, visitor)
-
   new_ast = { type: 'Program', body: ast[:_context] }
   new_ast 
 end
